@@ -1,5 +1,6 @@
 <!doctype html>
-<!-- Davetiyem şablonu. [[...]] alanlarını uret.py doldurur; bu dosyayı elle düzenlemeye gerek yok. -->
+<!-- Davetiyem şablonu. [[...]] alanlarını uret.py doldurur; bu dosyayı elle düzenlemeye gerek yok.
+     Renk: temalar.json · Süsleme: sablon/susleme/<ad>/ · Açılış: sablon/acilis/<ad>.html + .css -->
 <html lang="tr">
 <head>
 <meta charset="utf-8">
@@ -31,7 +32,7 @@
 
 </style>
 <style>
-/* Tema: renkler ve dokular (uret.py temalar.json'dan yazar) */
+/* Renk teması (temalar.json) */
 :root{
   --bg-deep:#070d1a;
   --bg:#10203a;
@@ -60,9 +61,13 @@
   --spark-d:#8a93a4;
   --door-dim:.4;
   --label:#c3cad6;
+  --orn-2:#6cc0b2;
+  --orn-3:#e48a78;
+  --orn-1:#c3cad6;
+  --orn-vein:#10203a;
   --foil:linear-gradient(100deg,#8a93a4 0%,#c3cad6 22%,#e6eaf1 40%,#ffffff 48%,#e6eaf1 56%,#c3cad6 72%,#8a93a4 100%);
   --noise:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.55 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url%28%23n%29'/%3E%3C/svg%3E");
-  --damask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='56' height='56'%3E%3Cg fill='none' stroke='%23c3cad6' stroke-opacity='0.12' stroke-width='1'%3E%3Cpath d='M28 16c3.5 4.5 3.5 7.5 0 12c-3.5-4.5-3.5-7.5 0-12zM28 40c3.5-4.5 3.5-7.5 0-12c-3.5 4.5-3.5 7.5 0 12zM16 28c4.5-3.5 7.5-3.5 12 0c-4.5 3.5-7.5 3.5-12 0zM40 28c-4.5-3.5-7.5-3.5-12 0c4.5 3.5 7.5 3.5 12 0z'/%3E%3C/g%3E%3Cg fill='%23c3cad6' fill-opacity='0.17'%3E%3Ccircle cx='0' cy='0' r='1.4'/%3E%3Ccircle cx='56' cy='0' r='1.4'/%3E%3Ccircle cx='0' cy='56' r='1.4'/%3E%3Ccircle cx='56' cy='56' r='1.4'/%3E%3C/g%3E%3C/svg%3E");
+  --damask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='44' height='44'%3E%3Cg fill='%23c3cad6' fill-opacity='0.17'%3E%3Ccircle cx='11' cy='8.5' r='2'/%3E%3Ccircle cx='7.6' cy='14' r='2'/%3E%3Ccircle cx='14.4' cy='14' r='2'/%3E%3C/g%3E%3Cg fill='none' stroke='%23c3cad6' stroke-opacity='0.12' stroke-width='1.2' stroke-linecap='round'%3E%3Cpath d='M25 29c2.5-2.5 5-2.5 7.5 0s5 2.5 7.5 0'/%3E%3Cpath d='M25 34c2.5-2.5 5-2.5 7.5 0s5 2.5 7.5 0'/%3E%3C/g%3E%3C/svg%3E");
   color-scheme:dark;
   --font-script:"Pinyon Script","Great Vibes","Snell Roundhand",cursive;
   --font-serif:"Cormorant Garamond","Cormorant",Garamond,"Times New Roman",serif;
@@ -73,7 +78,7 @@
 }
 [hidden]{display:none!important}
 
-/* Yerleşim: tek ekranlık davetiye kartı; üstünde mühürle açılan iki kanatlı kapak. */
+/* Yerleşim: tek ekranlık davetiye kartı; üstünde açılış sahnesi (kapı ya da zarf). */
 html,body{height:100%}
 body{
   margin:0;
@@ -243,7 +248,7 @@ body.locked{overflow:hidden}
 .replay:hover{color:var(--accent)}
 .replay:focus-visible{outline:1px solid var(--accent);outline-offset:2px}
 
-/* Açılış animasyonu (kapı açılırken içerik sırayla gelir) */
+/* İçerik açılıştan sonra sırayla gelir */
 .revealed .r{animation:rise 1.05s cubic-bezier(.2,.7,.2,1) both;animation-delay:calc(.55s + var(--i,0) * .13s)}
 .revealed .names .foil-text{animation:foil 2.6s ease-out 1.25s both}
 @keyframes rise{
@@ -255,75 +260,16 @@ body.locked{overflow:hidden}
   to{background-position:0% 0}
 }
 
-/* ---------- Kapak (iki kanatlı kapı) ---------- */
+/* ---------- Açılış sahnesinin ortak parçaları ---------- */
 .gate{
   position:fixed;inset:0;z-index:20;
   display:block;width:100%;height:100%;
   margin:0;padding:0;border:0;
   background:transparent;color:inherit;font:inherit;
   cursor:pointer;
-  perspective:1700px;
   -webkit-tap-highlight-color:transparent;
 }
 .gate:focus-visible .seal{outline:1px solid var(--accent-light);outline-offset:8px}
-.door{
-  position:absolute;top:0;bottom:0;width:50.4%;
-  display:block;
-  transition:transform 1.75s cubic-bezier(.6,.02,.22,1),filter 1.75s ease;
-  will-change:transform;
-  -webkit-backface-visibility:hidden;backface-visibility:hidden;
-}
-.door-l{
-  left:0;transform-origin:0 50%;
-  background:
-    var(--damask),
-    var(--noise),
-    radial-gradient(ellipse 140% 80% at 100% 38%,var(--bg-lift) 0%,var(--bg) 50%,var(--bg-deep) 100%);
-  box-shadow:inset -1px 0 0 var(--line),inset -26px 0 30px -18px var(--shade);
-}
-.door-r{
-  right:0;transform-origin:100% 50%;
-  background:
-    var(--damask),
-    var(--noise),
-    radial-gradient(ellipse 140% 80% at 0% 38%,var(--bg-lift) 0%,var(--bg) 50%,var(--bg-deep) 100%);
-  box-shadow:inset 1px 0 0 var(--line),inset 26px 0 30px -18px var(--shade);
-}
-.door::before,.door::after{content:"";position:absolute;pointer-events:none}
-.door::before{inset:16px;border:1px solid var(--line)}
-.door::after{inset:23px;border:1px solid var(--faint)}
-.gate.open .door-l{transform:rotateY(-106deg);filter:brightness(var(--door-dim))}
-.gate.open .door-r{transform:rotateY(106deg);filter:brightness(var(--door-dim))}
-
-.cover{
-  position:absolute;inset:0;
-  display:flex;flex-direction:column;align-items:center;justify-content:center;
-  gap:clamp(14px,2.6vh,24px);
-  padding:24px 16px;box-sizing:border-box;
-  text-align:center;
-  pointer-events:none;
-  transition:opacity .45s ease,transform .45s ease;
-}
-.plaque{
-  --seal:clamp(100px,28vw,118px);
-  position:relative;
-  display:flex;flex-direction:column;align-items:center;
-  gap:clamp(10px,1.9vh,16px);
-  width:min(80vw,320px);box-sizing:border-box;
-  padding:clamp(42px,7vh,58px) 16px 0;
-  margin-bottom:calc(var(--seal) / 2);
-  background:
-    var(--noise),
-    radial-gradient(ellipse 120% 90% at 50% 25%,var(--bg-lift) 0%,var(--bg) 62%,var(--bg-deep) 100%);
-  border:1px solid var(--line);
-  border-radius:50% 50% 6px 6px / 150px 150px 6px 6px;
-  box-shadow:
-    inset 0 0 0 6px var(--bg),
-    inset 0 0 0 7px var(--faint),
-    0 26px 50px -14px var(--shade);
-}
-.plaque .seal{width:var(--seal);margin-top:4px;margin-bottom:calc(var(--seal) / -2)}
-.gate.opening .cover{opacity:0;transform:scale(1.05)}
 .cover-eyebrow{display:block;font-size:11px;color:var(--label);letter-spacing:.38em;padding-left:.38em}
 .cover-names{display:flex;flex-direction:column;align-items:center;font-family:var(--font-script);font-size:clamp(40px,min(12.5vw,6.6vh),56px);line-height:.96}
 .cover-names span{display:inline-block;padding:.04em .36em .1em}
@@ -356,7 +302,7 @@ body.locked{overflow:hidden}
 #sparkle{position:fixed;inset:0;width:100%;height:100%;z-index:30;pointer-events:none}
 
 /* Kodsuz pırıltı: yalnızca kod çalışmayan önizlemelerde (iPhone dosya önizlemesi gibi) */
-.sparks{position:fixed;left:50%;top:54%;width:0;height:0;z-index:30;pointer-events:none}
+.sparks{position:fixed;left:50%;top:var(--spark-top,54%);width:0;height:0;z-index:30;pointer-events:none}
 .js .sparks{display:none}
 .sparks i{
   position:absolute;left:0;top:0;
@@ -364,7 +310,7 @@ body.locked{overflow:hidden}
   background:var(--c);
   clip-path:polygon(50% 0,60% 40%,100% 50%,60% 60%,50% 100%,40% 60%,0 50%,40% 40%);
   opacity:0;
-  animation:spark var(--t) cubic-bezier(.15,.7,.3,1) calc(2.7s + var(--d)) both;
+  animation:spark var(--t) cubic-bezier(.15,.7,.3,1) calc(var(--spark-delay,2.7s) + var(--d)) both;
 }
 @keyframes spark{
   0%{opacity:0;transform:translate(0,0) scale(.2) rotate(0)}
@@ -375,62 +321,164 @@ body.locked{overflow:hidden}
   100%{opacity:0;transform:translate(var(--x),calc(var(--y) + var(--f))) scale(.35) rotate(calc(var(--r) * 1.6))}
 }
 
-/* Kod çalışmayan ortamlar: kapak birkaç saniye görünür, sonra kapılar kendiliğinden açılır.
+/* Kod çalışmayan ortamlar: açılış sahnesi birkaç saniye görünür, sonra kendiliğinden açılır.
    Animasyon da çalışmazsa temel durum zaten "açık" olduğu için kart doğrudan görünür. */
-html:not(.js) .gate{visibility:hidden;animation:gate-off 0s linear 4.4s both}
-html:not(.js) .door-l{transform:rotateY(-106deg);filter:brightness(var(--door-dim));animation:door-l 1.75s cubic-bezier(.6,.02,.22,1) 2.6s both}
-html:not(.js) .door-r{transform:rotateY(106deg);filter:brightness(var(--door-dim));animation:door-r 1.75s cubic-bezier(.6,.02,.22,1) 2.6s both}
-html:not(.js) .cover{opacity:0;animation:cover-out .5s ease 2.2s both}
+html:not(.js) .gate{visibility:hidden;animation:gate-off 0s linear var(--nojs-hide,4.4s) both}
 html:not(.js) .hint,html:not(.js) .count{display:none}
 html:not(.js) .count-static{display:block}
-html:not(.js) .r{animation:rise 1.05s cubic-bezier(.2,.7,.2,1) both;animation-delay:calc(3.05s + var(--i,0) * .13s)}
-html:not(.js) .names .foil-text{animation:foil 2.6s ease-out 3.7s both}
+html:not(.js) .r{animation:rise 1.05s cubic-bezier(.2,.7,.2,1) both;animation-delay:calc(var(--nojs-rise,3.05s) + var(--i,0) * .13s)}
+html:not(.js) .names .foil-text{animation:foil 2.6s ease-out var(--nojs-foil,3.7s) both}
 @keyframes gate-off{from{visibility:visible}to{visibility:hidden}}
-@keyframes door-l{from{transform:none;filter:none}to{transform:rotateY(-106deg);filter:brightness(var(--door-dim))}}
-@keyframes door-r{from{transform:none;filter:none}to{transform:rotateY(106deg);filter:brightness(var(--door-dim))}}
-@keyframes cover-out{from{opacity:1;transform:none}to{opacity:0;transform:scale(1.05)}}
 
 @media (prefers-reduced-motion:reduce){
-  .door{transition:none}
-  .gate{transition:opacity .35s ease}
-  .gate.open{opacity:0}
-  .gate.open .door-l,.gate.open .door-r{transform:none;filter:none}
   .revealed .r,.revealed .names .foil-text,.hint{animation:none}
   html:not(.js) .gate,.sparks{display:none}
   html:not(.js) .r,html:not(.js) .names .foil-text{animation:none}
 }
 </style>
+<style>
+/* Süsleme seti */
+/* Çini: köşe süsleri biraz daha büyük, lale dalı rahat okunsun */
+.corner{width:clamp(58px,16.5vw,76px);height:clamp(58px,16.5vw,76px)}
+
+</style>
+<style>
+/* Açılış sahnesi */
+/* Açılış: mühürlü zarf. Mühür kalkar, kapak açılır (içinde süsleme deseni), kart zarftan yükselir. */
+:root{--nojs-hide:4.6s;--nojs-rise:4.15s;--nojs-foil:4.7s;--spark-delay:2.25s;--spark-top:58%}
+
+.gate-zarf{
+  background:
+    var(--noise),
+    radial-gradient(ellipse 90% 70% at 50% 30%,var(--bg-lift) 0%,var(--bg) 48%,var(--bg-deep) 100%);
+  background-color:var(--bg-deep);
+  transition:opacity .6s ease;
+}
+.gate-zarf.done{opacity:0}
+
+.z-scene{
+  position:absolute;inset:0;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:clamp(14px,2.6vh,24px);
+  padding:24px 16px;box-sizing:border-box;
+  text-align:center;pointer-events:none;
+}
+.z-head{display:flex;flex-direction:column;align-items:center;gap:clamp(8px,1.5vh,14px);transition:opacity .45s ease,transform .45s ease}
+.gate-zarf.opening .z-head{opacity:0;transform:translateY(-10px)}
+
+.z-env{
+  position:relative;display:block;
+  width:min(86vw,410px);aspect-ratio:1.45;
+  margin-top:clamp(10px,3vh,34px);
+  perspective:1100px;
+}
+.z-back{
+  position:absolute;inset:0;border-radius:3px;
+  background:var(--noise),linear-gradient(180deg,var(--bg-deep),var(--bg));
+  box-shadow:0 26px 50px -16px var(--shade);
+}
+
+/* Zarfın içindeki kart */
+.z-card{
+  position:absolute;left:6%;right:6%;top:5%;height:90%;z-index:1;
+  box-sizing:border-box;padding:7% 5% 0;
+  display:flex;flex-direction:column;align-items:center;gap:6px;
+  background:var(--noise),linear-gradient(180deg,var(--sheen-a),var(--sheen-b)),var(--bg-lift);
+  border:1px solid var(--line);
+  box-shadow:inset 0 0 0 4px var(--bg-lift),inset 0 0 0 5px var(--faint);
+  transition:transform 1.05s cubic-bezier(.3,.7,.2,1) .75s;
+}
+.z-card .crest{width:52%}
+.z-card-names{
+  display:flex;flex-wrap:wrap;justify-content:center;align-items:baseline;
+  font-family:var(--font-script);font-size:clamp(22px,6.6vw,32px);line-height:1.05;
+}
+.z-card-names span{display:inline-block;padding:.04em .14em .1em}
+.z-card-names .amp{font-size:.6em}
+.z-card-date{font-size:9px;letter-spacing:.3em;padding-left:.3em;color:var(--label)}
+.gate-zarf.open .z-card{transform:translateY(-56%)}
+
+/* Zarfın cepleri ve kapağı */
+.z-f{position:absolute;inset:0;display:block;filter:drop-shadow(0 0 .6px var(--line)) drop-shadow(0 -2px 3px var(--shade))}
+.z-f i{position:absolute;inset:0;display:block}
+.z-left,.z-right{z-index:2}
+.z-bottom{z-index:3}
+.z-left i{clip-path:polygon(0 0,52% 56%,0 100%);background:var(--noise),linear-gradient(95deg,var(--bg-deep),var(--bg) 75%)}
+.z-right i{clip-path:polygon(100% 0,48% 56%,100% 100%);background:var(--noise),linear-gradient(265deg,var(--bg-deep),var(--bg) 75%)}
+.z-bottom i{clip-path:polygon(0 100%,50% 44%,100% 100%);background:var(--noise),linear-gradient(0deg,var(--bg),var(--bg-lift))}
+
+.z-flap{
+  position:absolute;left:0;right:0;top:0;height:62%;z-index:5;
+  display:block;transform-origin:50% 0;transform-style:preserve-3d;
+  transition:transform .85s cubic-bezier(.5,0,.25,1) .05s,z-index 0s linear .5s;
+}
+.z-flap .z-f{filter:drop-shadow(0 0 .6px var(--line)) drop-shadow(0 3px 4px var(--shade));-webkit-backface-visibility:hidden;backface-visibility:hidden}
+.z-flap i{clip-path:polygon(0 0,100% 0,50% 100%)}
+.z-flap-out i{background:var(--noise),linear-gradient(180deg,var(--bg-lift),var(--bg))}
+.z-flap-in{transform:rotateX(180deg)}
+.z-flap-in i{background:var(--damask),var(--bg-deep)}
+.gate-zarf.open .z-flap{transform:rotateX(180deg);z-index:0}
+
+.z-seal{
+  position:absolute;left:50%;top:62%;z-index:6;
+  width:clamp(66px,19vw,86px);
+  transform:translate(-50%,-50%);
+  transition:opacity .35s ease,transform .35s ease;
+}
+.z-seal .mono{font-size:clamp(21px,6vw,27px)}
+.gate-zarf.opening .z-seal{opacity:0;transform:translate(-50%,-50%) scale(1.3)}
+.gate-zarf .hint{transition:opacity .3s ease}
+.gate-zarf.opening .hint{animation:none;opacity:0}
+
+/* Yatay ve kısa ekranlar (ör. önizleme görseli, yatay telefon) */
+@media (min-aspect-ratio:3/2) and (max-height:560px){
+  .z-scene{flex-direction:row;gap:clamp(24px,5vw,60px)}
+  .z-env{width:min(46vw,380px);margin-top:0}
+  .gate-zarf .hint{position:absolute;left:0;right:0;bottom:12px}
+}
+
+/* Kodsuz ortam: zarf kendiliğinden açılır */
+html:not(.js) .gate-zarf{animation:z-fade .55s ease 3.95s both,gate-off 0s linear var(--nojs-hide) both}
+html:not(.js) .z-head{opacity:0;animation:z-head-out .45s ease 2s both}
+html:not(.js) .z-seal{opacity:0;animation:z-seal-out .35s ease 2s both}
+html:not(.js) .z-flap{transform:rotateX(180deg);z-index:0;animation:z-flap-open .85s cubic-bezier(.5,0,.25,1) 2.2s both}
+html:not(.js) .z-card{transform:translateY(-56%);animation:z-card-up 1.05s cubic-bezier(.3,.7,.2,1) 2.85s both}
+@keyframes z-fade{from{opacity:1}to{opacity:0}}
+@keyframes z-head-out{from{opacity:1;transform:none}to{opacity:0;transform:translateY(-10px)}}
+@keyframes z-seal-out{from{opacity:1;transform:translate(-50%,-50%)}to{opacity:0;transform:translate(-50%,-50%) scale(1.3)}}
+@keyframes z-flap-open{0%{transform:none;z-index:5}55%{z-index:5}56%{z-index:0}100%{transform:rotateX(180deg);z-index:0}}
+@keyframes z-card-up{from{transform:none}to{transform:translateY(-56%)}}
+
+@media (prefers-reduced-motion:reduce){
+  .gate-zarf *{transition:none!important}
+  .gate-zarf{transition:opacity .35s ease}
+  html:not(.js) .gate-zarf{display:none}
+}
+
+</style>
 </head>
 <body>
 
 <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
-  <symbol id="corner" viewBox="0 0 90 90">
-    <g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
-      <path d="M6 84V26C6 14 14 6 26 6H84" stroke-width="1.1"/>
-      <path d="M13 72V31C13 20 20 13 31 13H72" stroke-width=".8" opacity=".6"/>
-      <path d="M24 56C24 37 37 24 56 24" stroke-width="1"/>
-      <path d="M56 24C64 24 68 30 64 34C61 37 56 34 58 31" stroke-width="1"/>
-      <path d="M24 56C24 64 30 68 34 64C37 61 34 56 31 58" stroke-width="1"/>
-      <path d="M33 33C38 38 42 40 48 40" stroke-width=".8"/>
-      <path d="M33 33C38 38 40 42 40 48" stroke-width=".8"/>
-    </g>
-    <path d="M27 21L33 27L27 33L21 27Z" fill="currentColor"/>
-    <circle cx="84" cy="6" r="1.7" fill="currentColor"/>
-    <circle cx="6" cy="84" r="1.7" fill="currentColor"/>
-  </symbol>
-  <symbol id="crest" viewBox="0 0 220 24">
-    <g fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="1">
-      <path d="M8 12H84"/>
-      <path d="M136 12H212"/>
-      <path d="M84 12C93 12 96 5 91 4C87 3 86 8 89 9"/>
-      <path d="M84 12C93 12 96 19 91 20C87 21 86 16 89 15"/>
-      <path d="M136 12C127 12 124 5 129 4C133 3 134 8 131 9"/>
-      <path d="M136 12C127 12 124 19 129 20C133 21 134 16 131 15"/>
-    </g>
-    <path d="M110 3L118 12L110 21L102 12Z" fill="currentColor"/>
-    <circle cx="98" cy="12" r="1.6" fill="currentColor"/>
-    <circle cx="122" cy="12" r="1.6" fill="currentColor"/>
-  </symbol>
+<symbol id="corner" viewBox="0 0 90 90">
+  <g fill="none" stroke-linecap="round" style="stroke:var(--orn-1)">
+    <path d="M4 86V4H86" stroke-width="1.1"/>
+    <path d="M9 80V9H80" stroke-width=".7" opacity=".55"/>
+  </g>
+  <g transform="translate(15 22) rotate(62)"><path d="M0 0C13.2 -8 33 -7.2 44 -1.2C30.8 -2.8 13.2 -1.6 0 0Z" style="fill:var(--orn-1)"/><path d="M3.52 -0.96C15.4 -4.4 30.8 -4.4 41.8 -1.44" fill="none" style="stroke:var(--orn-vein)" stroke-width=".7" opacity=".9"/></g>
+  <g transform="translate(22 15) rotate(28)"><path d="M0 0C13.2 8 33 7.2 44 1.2C30.8 2.8 13.2 1.6 0 0Z" style="fill:var(--orn-1)"/><path d="M3.52 0.96C15.4 4.4 30.8 4.4 41.8 1.44" fill="none" style="stroke:var(--orn-vein)" stroke-width=".7" opacity=".9"/></g>
+  <path d="M19 19C27 27 33 33 39 39" fill="none" style="stroke:var(--orn-2)" stroke-width="1.3" stroke-linecap="round"/>
+  <path d="M0 0C4 -3 2.4 -8 0 -10C-2.4 -8 -4 -3 0 0Z" style="fill:var(--orn-2)" transform="translate(31 31) rotate(-100)"/><path d="M0 0C4 -3 2.4 -8 0 -10C-2.4 -8 -4 -3 0 0Z" style="fill:var(--orn-2)" transform="translate(31 31) rotate(10)"/>
+  <g transform="translate(39 39) rotate(135) scale(1.15)"><path d="M0 0C-6.5 -1.5 -8.5 -10 -6 -17.5C-4.2 -13.2 -2.2 -11.4 0 -10.6C2.2 -11.4 4.2 -13.2 6 -17.5C8.5 -10 6.5 -1.5 0 0Z" style="fill:var(--orn-3)"/><path d="M0 -10.6C-2.6 -14 -2 -20.5 0 -24.5C2 -20.5 2.6 -14 0 -10.6Z" style="fill:var(--orn-3)" opacity=".8"/></g>
+  <g style="fill:var(--orn-1)"><circle cx="66" cy="13.68" r="1.7"/><circle cx="64" cy="17.16" r="1.7"/><circle cx="68" cy="17.16" r="1.7"/><circle cx="16" cy="63.68" r="1.7"/><circle cx="14" cy="67.16" r="1.7"/><circle cx="18" cy="67.16" r="1.7"/></g>
+  <circle cx="13.5" cy="13.5" r="2.4" style="fill:var(--orn-3)"/>
+</symbol>
+<symbol id="crest" viewBox="0 0 220 24">
+  <path d="M97 13C88 13 84 7 76 9" fill="none" style="stroke:var(--orn-2)" stroke-width="1.2" stroke-linecap="round"/><path d="M0 0C3 -2.4 1.8 -6.4 0 -8C-1.8 -6.4 -3 -2.4 0 0Z" style="fill:var(--orn-2)" transform="translate(80 9.6) rotate(-70)"/><path d="M68 12H18" fill="none" style="stroke:var(--orn-1)" stroke-width="1" stroke-linecap="round"/><g style="fill:var(--orn-1)"><circle cx="10" cy="9.91" r="1.5"/><circle cx="8.2" cy="13.04" r="1.5"/><circle cx="11.8" cy="13.04" r="1.5"/></g><circle cx="72" cy="12" r="1.6" style="fill:var(--orn-3)"/><path d="M123 13C132 13 136 7 144 9" fill="none" style="stroke:var(--orn-2)" stroke-width="1.2" stroke-linecap="round"/><path d="M0 0C3 -2.4 1.8 -6.4 0 -8C-1.8 -6.4 -3 -2.4 0 0Z" style="fill:var(--orn-2)" transform="translate(140 9.6) rotate(70)"/><path d="M152 12H202" fill="none" style="stroke:var(--orn-1)" stroke-width="1" stroke-linecap="round"/><g style="fill:var(--orn-1)"><circle cx="210" cy="9.91" r="1.5"/><circle cx="208.2" cy="13.04" r="1.5"/><circle cx="211.8" cy="13.04" r="1.5"/></g><circle cx="148" cy="12" r="1.6" style="fill:var(--orn-3)"/>
+  <path d="M0 0C3.4 -2.7 2.04 -7.2 0 -9C-2.04 -7.2 -3.4 -2.7 0 0Z" style="fill:var(--orn-2)" transform="translate(110 21) rotate(-62)"/><path d="M0 0C3.4 -2.7 2.04 -7.2 0 -9C-2.04 -7.2 -3.4 -2.7 0 0Z" style="fill:var(--orn-2)" transform="translate(110 21) rotate(62)"/>
+  <g transform="translate(110 22) rotate(0) scale(0.8)"><path d="M0 0C-6.5 -1.5 -8.5 -10 -6 -17.5C-4.2 -13.2 -2.2 -11.4 0 -10.6C2.2 -11.4 4.2 -13.2 6 -17.5C8.5 -10 6.5 -1.5 0 0Z" style="fill:var(--orn-3)"/><path d="M0 -10.6C-2.6 -14 -2 -20.5 0 -24.5C2 -20.5 2.6 -14 0 -10.6Z" style="fill:var(--orn-3)" opacity=".8"/></g>
+</symbol>
+
 </svg>
 
 <main class="stage" lang="tr">
@@ -490,19 +538,34 @@ html:not(.js) .names .foil-text{animation:foil 2.6s ease-out 3.7s both}
   <button class="replay caps" id="replay" type="button" hidden>Açılışı tekrar izle</button>
 </main>
 
-<button class="gate" id="gate" type="button" lang="tr" aria-label="Davetiyeyi aç">
-  <span class="door door-l" aria-hidden="true"></span>
-  <span class="door door-r" aria-hidden="true"></span>
-  <span class="cover" aria-hidden="true">
-    <span class="plaque">
+<button class="gate gate-zarf" id="gate" type="button" lang="tr" aria-label="Davetiyeyi aç"
+        data-open="340" data-reveal="1950" data-done="1950" data-hide="2600">
+  <span class="z-scene" aria-hidden="true">
+    <span class="z-head">
       <span class="cover-eyebrow caps">Sünnet Düğünü Davetiyesi</span>
       <span class="cover-names"><span class="foil-text">Ömer Faruk</span></span>
       <span class="cover-date caps">24 · 07 · 2027</span>
-      <span class="seal"><span class="mono">Ö</span></span>
+    </span>
+    <span class="z-env">
+      <span class="z-back"></span>
+      <span class="z-card">
+        <svg class="crest"><use href="#crest"/></svg>
+        <span class="z-card-names"><span class="foil-text">Ömer Faruk</span></span>
+        <span class="z-card-date caps">24 · 07 · 2027</span>
+      </span>
+      <span class="z-f z-left"><i></i></span>
+      <span class="z-f z-right"><i></i></span>
+      <span class="z-f z-bottom"><i></i></span>
+      <span class="z-flap">
+        <span class="z-f z-flap-out"><i></i></span>
+        <span class="z-f z-flap-in"><i></i></span>
+      </span>
+      <span class="seal z-seal"><span class="mono">Ö</span></span>
     </span>
     <span class="hint">Açmak için dokunun</span>
   </span>
 </button>
+
 
 <div class="sparks" aria-hidden="true"><i style="--x:-30px;--y:78px;--f:96px;--r:117deg;--z:8.0px;--t:2.51s;--d:0.16s;--c:var(--spark-b)"></i><i style="--x:109px;--y:8px;--f:107px;--r:125deg;--z:11.3px;--t:1.86s;--d:0.10s;--c:var(--spark-c)"></i><i style="--x:106px;--y:-70px;--f:63px;--r:113deg;--z:8.4px;--t:2.47s;--d:0.19s;--c:var(--spark-b)"></i><i style="--x:103px;--y:24px;--f:64px;--r:176deg;--z:9.6px;--t:1.61s;--d:0.16s;--c:var(--spark-b)"></i><i style="--x:90px;--y:-150px;--f:70px;--r:48deg;--z:8.7px;--t:2.15s;--d:0.29s;--c:var(--spark-a)"></i><i style="--x:113px;--y:-160px;--f:127px;--r:-72deg;--z:9.3px;--t:2.48s;--d:0.15s;--c:var(--spark-a)"></i><i style="--x:195px;--y:-44px;--f:74px;--r:-22deg;--z:8.3px;--t:1.52s;--d:0.13s;--c:var(--spark-d)"></i><i style="--x:-71px;--y:146px;--f:56px;--r:20deg;--z:11.1px;--t:1.79s;--d:0.14s;--c:var(--spark-c)"></i><i style="--x:182px;--y:-147px;--f:64px;--r:66deg;--z:9.3px;--t:2.58s;--d:0.03s;--c:var(--spark-a)"></i><i style="--x:142px;--y:-20px;--f:61px;--r:-33deg;--z:9.4px;--t:2.39s;--d:0.13s;--c:var(--spark-a)"></i><i style="--x:-20px;--y:-243px;--f:89px;--r:-119deg;--z:11.9px;--t:1.97s;--d:0.04s;--c:var(--spark-b)"></i><i style="--x:39px;--y:-213px;--f:63px;--r:-98deg;--z:11.2px;--t:1.55s;--d:0.11s;--c:var(--spark-b)"></i><i style="--x:62px;--y:40px;--f:74px;--r:48deg;--z:12.2px;--t:1.66s;--d:0.25s;--c:var(--spark-d)"></i><i style="--x:25px;--y:-108px;--f:113px;--r:100deg;--z:8.6px;--t:2.06s;--d:0.28s;--c:var(--spark-c)"></i><i style="--x:-96px;--y:-107px;--f:110px;--r:-29deg;--z:5.4px;--t:2.08s;--d:0.01s;--c:var(--spark-b)"></i><i style="--x:-128px;--y:-206px;--f:126px;--r:152deg;--z:7.7px;--t:2.25s;--d:0.15s;--c:var(--spark-c)"></i><i style="--x:-98px;--y:-8px;--f:62px;--r:127deg;--z:10.6px;--t:1.90s;--d:0.06s;--c:var(--spark-c)"></i><i style="--x:-31px;--y:27px;--f:48px;--r:-14deg;--z:7.9px;--t:1.57s;--d:0.08s;--c:var(--spark-a)"></i><i style="--x:48px;--y:99px;--f:69px;--r:124deg;--z:12.3px;--t:1.51s;--d:0.06s;--c:var(--spark-a)"></i><i style="--x:96px;--y:-147px;--f:45px;--r:62deg;--z:5.8px;--t:2.47s;--d:0.19s;--c:var(--spark-d)"></i><i style="--x:49px;--y:11px;--f:62px;--r:6deg;--z:9.2px;--t:1.60s;--d:0.22s;--c:var(--spark-b)"></i><i style="--x:102px;--y:-213px;--f:93px;--r:-125deg;--z:8.4px;--t:2.49s;--d:0.27s;--c:var(--spark-a)"></i><i style="--x:-62px;--y:-139px;--f:119px;--r:94deg;--z:6.4px;--t:2.36s;--d:0.13s;--c:var(--spark-b)"></i><i style="--x:4px;--y:-93px;--f:56px;--r:60deg;--z:9.6px;--t:1.87s;--d:0.19s;--c:var(--spark-d)"></i><i style="--x:24px;--y:31px;--f:106px;--r:-174deg;--z:9.2px;--t:1.66s;--d:0.13s;--c:var(--spark-d)"></i><i style="--x:-77px;--y:25px;--f:42px;--r:72deg;--z:9.2px;--t:2.27s;--d:0.11s;--c:var(--spark-b)"></i><i style="--x:-90px;--y:89px;--f:97px;--r:-53deg;--z:6.8px;--t:1.91s;--d:0.24s;--c:var(--spark-b)"></i><i style="--x:176px;--y:-59px;--f:112px;--r:100deg;--z:7.2px;--t:1.92s;--d:0.06s;--c:var(--spark-a)"></i><i style="--x:-118px;--y:80px;--f:54px;--r:-101deg;--z:10.4px;--t:1.87s;--d:0.20s;--c:var(--spark-b)"></i><i style="--x:-75px;--y:-100px;--f:105px;--r:-57deg;--z:10.2px;--t:2.12s;--d:0.10s;--c:var(--spark-a)"></i><i style="--x:-99px;--y:98px;--f:51px;--r:-61deg;--z:9.8px;--t:1.52s;--d:0.02s;--c:var(--spark-b)"></i><i style="--x:-117px;--y:-55px;--f:84px;--r:22deg;--z:9.7px;--t:2.55s;--d:0.07s;--c:var(--spark-c)"></i><i style="--x:-84px;--y:-145px;--f:84px;--r:104deg;--z:12.6px;--t:1.54s;--d:0.08s;--c:var(--spark-a)"></i><i style="--x:-27px;--y:-145px;--f:47px;--r:112deg;--z:12.3px;--t:1.97s;--d:0.15s;--c:var(--spark-a)"></i><i style="--x:21px;--y:116px;--f:68px;--r:-59deg;--z:9.4px;--t:2.57s;--d:0.26s;--c:var(--spark-b)"></i><i style="--x:-91px;--y:-89px;--f:108px;--r:34deg;--z:12.8px;--t:2.48s;--d:0.01s;--c:var(--spark-d)"></i><i style="--x:129px;--y:-103px;--f:43px;--r:66deg;--z:7.0px;--t:1.54s;--d:0.24s;--c:var(--spark-d)"></i><i style="--x:-0px;--y:74px;--f:50px;--r:29deg;--z:5.3px;--t:2.00s;--d:0.09s;--c:var(--spark-d)"></i><i style="--x:6px;--y:-217px;--f:83px;--r:-139deg;--z:6.2px;--t:2.35s;--d:0.17s;--c:var(--spark-c)"></i><i style="--x:17px;--y:-103px;--f:48px;--r:72deg;--z:11.1px;--t:2.02s;--d:0.23s;--c:var(--spark-d)"></i><i style="--x:-211px;--y:55px;--f:105px;--r:52deg;--z:7.0px;--t:1.50s;--d:0.16s;--c:var(--spark-d)"></i><i style="--x:-94px;--y:33px;--f:42px;--r:101deg;--z:5.4px;--t:2.44s;--d:0.15s;--c:var(--spark-b)"></i><i style="--x:-135px;--y:-69px;--f:116px;--r:-57deg;--z:11.6px;--t:2.57s;--d:0.25s;--c:var(--spark-a)"></i><i style="--x:121px;--y:-55px;--f:126px;--r:-13deg;--z:6.2px;--t:2.43s;--d:0.28s;--c:var(--spark-d)"></i><i style="--x:195px;--y:27px;--f:78px;--r:-96deg;--z:6.3px;--t:2.37s;--d:0.13s;--c:var(--spark-a)"></i><i style="--x:-177px;--y:-64px;--f:97px;--r:-87deg;--z:12.5px;--t:2.16s;--d:0.11s;--c:var(--spark-b)"></i><i style="--x:-178px;--y:-19px;--f:58px;--r:90deg;--z:7.6px;--t:2.29s;--d:0.14s;--c:var(--spark-c)"></i><i style="--x:-49px;--y:-84px;--f:87px;--r:-64deg;--z:11.5px;--t:2.20s;--d:0.18s;--c:var(--spark-a)"></i><i style="--x:-73px;--y:36px;--f:87px;--r:103deg;--z:10.5px;--t:2.24s;--d:0.18s;--c:var(--spark-d)"></i><i style="--x:52px;--y:3px;--f:91px;--r:89deg;--z:10.3px;--t:1.72s;--d:0.03s;--c:var(--spark-a)"></i><i style="--x:-206px;--y:-10px;--f:107px;--r:-169deg;--z:7.6px;--t:1.72s;--d:0.14s;--c:var(--spark-c)"></i><i style="--x:78px;--y:-137px;--f:109px;--r:-143deg;--z:5.6px;--t:2.20s;--d:0.12s;--c:var(--spark-b)"></i><i style="--x:-80px;--y:-196px;--f:73px;--r:-130deg;--z:7.8px;--t:1.61s;--d:0.25s;--c:var(--spark-b)"></i><i style="--x:-0px;--y:-169px;--f:92px;--r:-174deg;--z:6.3px;--t:2.14s;--d:0.28s;--c:var(--spark-c)"></i></div>
 <canvas id="sparkle" aria-hidden="true"></canvas>
@@ -520,6 +583,7 @@ html:not(.js) .names .foil-text{animation:foil 2.6s ease-out 3.7s both}
   var names = document.getElementById('names');
   var reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
   var busy = false;
+  function T(k, d){ var v = parseInt(gate.getAttribute('data-' + k), 10); return isNaN(v) ? d : v; }
 
   body.classList.add('locked');
 
@@ -586,25 +650,23 @@ html:not(.js) .names .foil-text{animation:foil 2.6s ease-out 3.7s both}
     })();
   }
 
-  /* ---- Kapıyı aç / kapat ---- */
+  /* ---- Açılış ---- */
   function open(){
     if (busy) return;
     busy = true;
     var s = gate.querySelector('.seal').getBoundingClientRect();
     var cx = s.left + s.width / 2, cy = s.top + s.height / 2;
     gate.classList.add('opening');
-    setTimeout(function(){
-      gate.classList.add('open');
-      body.classList.add('revealed');
-      if (!reduce) burst(cx, cy);
-    }, reduce ? 0 : 380);
+    setTimeout(function(){ gate.classList.add('open'); if (!reduce) burst(cx, cy); }, reduce ? 0 : T('open', 380));
+    setTimeout(function(){ body.classList.add('revealed'); }, reduce ? 0 : T('reveal', 380));
+    setTimeout(function(){ gate.classList.add('done'); }, reduce ? 0 : T('done', 380));
     setTimeout(function(){
       gate.hidden = true;
       body.classList.remove('locked');
       replay.hidden = false;
       busy = false;
       try { names.focus({ preventScroll:true }); } catch(e){}
-    }, reduce ? 400 : 2150);
+    }, reduce ? 400 : T('hide', 2150));
   }
   gate.addEventListener('click', open);
 
@@ -612,7 +674,7 @@ html:not(.js) .names .foil-text{animation:foil 2.6s ease-out 3.7s both}
     if (busy) return;
     window.scrollTo(0, 0);
     body.classList.remove('revealed');
-    gate.classList.remove('open', 'opening');
+    gate.classList.remove('open', 'opening', 'done');
     gate.hidden = false;
     body.classList.add('locked');
     replay.hidden = true;

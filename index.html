@@ -72,6 +72,7 @@ h2{font-weight:500;font-size:clamp(32px,4.4vw,44px);line-height:1.1;margin:0 0 6
 .shot img{display:block;width:100%;height:auto;aspect-ratio:1200/630;object-fit:cover;transition:transform .5s ease}
 .shot:hover img{transform:scale(1.025)}
 .theme-text h3{margin:0;font-weight:600;font-size:25px;line-height:1.2}
+.parts{margin:0 0 2px;font-size:10.5px;letter-spacing:.2em;color:var(--accent)}
 .theme-text p{margin:2px 0 6px;color:var(--muted)}
 .theme-link{font-family:var(--font-caps);font-size:11.5px;letter-spacing:.22em;text-transform:uppercase;color:var(--accent);text-decoration:none}
 .theme-link:hover{text-decoration:underline;text-underline-offset:4px}
@@ -82,6 +83,13 @@ h2{font-weight:500;font-size:clamp(32px,4.4vw,44px);line-height:1.1;margin:0 0 6
 .steps h3{margin:0 0 4px;font-size:23px;font-weight:600}
 .steps p{margin:0;color:var(--muted)}
 
+.kit{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,280px),1fr));gap:28px 40px}
+.kit h3{margin:0 0 10px;font-family:var(--font-caps);font-weight:500;font-size:12px;letter-spacing:.24em;text-transform:uppercase;color:var(--accent)}
+.kit ul{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:12px}
+.kit li{display:flex;gap:12px;align-items:flex-start}
+.kit b{display:block;font-weight:600;font-size:19px;line-height:1.25}
+.kit small{display:block;font-size:16px;color:var(--muted);line-height:1.35}
+.swatch{flex:none;width:30px;height:30px;margin-top:2px;border-radius:50%;background:linear-gradient(135deg,var(--a) 0 55%,var(--b) 55% 100%);box-shadow:inset 0 0 0 1px rgba(0,0,0,.12)}
 .features{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:10px 36px;margin:0;padding:0;list-style:none}
 .features li{padding:12px 0;border-bottom:1px solid var(--rule)}
 .features b{font-weight:600}
@@ -104,49 +112,109 @@ footer{padding-block:28px 40px;border-top:1px solid var(--rule);color:var(--mute
 <main>
   <section id="temalar">
     <div class="wrap">
-      <h2>Temalar</h2>
-      <p class="section-note">Her temanın örnek davetiyesini açıp kapı açılışını kendi telefonunuzda deneyebilirsiniz. Renkleri kendi gününüze göre uyarlayabiliriz.</p>
+      <h2>Koleksiyonlar</h2>
+      <p class="section-note">Her örneği açıp açılışını kendi telefonunuzda deneyebilirsiniz. Renkleri kendi gününüze göre uyarlayabiliriz.</p>
       <div class="themes">
       <article class="theme">
-        <a class="shot" href="ornek-bordo-altin/" aria-label="Bordo &amp; Altın örneğini aç">
-          <img src="ornek-bordo-altin/onizleme.jpg" alt="Bordo &amp; Altın temasıyla hazırlanmış örnek davetiye kapağı" width="1200" height="630" loading="lazy">
+        <a class="shot" href="ornek-bordo-altin/" aria-label="Bordo Kadife örneğini aç">
+          <img src="ornek-bordo-altin/onizleme.jpg" alt="Bordo Kadife örnek davetiye kapağı" width="1200" height="630" loading="lazy">
         </a>
         <div class="theme-text">
-          <h3>Bordo &amp; Altın</h3>
-          <p>Kadife bordo üzerine altın varak. Klasik ve görkemli.</p>
+          <p class="parts caps">Bordo &amp; Altın · Klasik · Kapı</p>
+          <h3>Bordo Kadife</h3>
+          <p>Altın varaklı kadife kapılar; klasik ve görkemli.</p>
           <a class="theme-link" href="ornek-bordo-altin/">Örneği aç <span aria-hidden="true">→</span></a>
         </div>
       </article>
       <article class="theme">
-        <a class="shot" href="ornek-pudra/" aria-label="Pudra &amp; Gül Altını örneğini aç">
-          <img src="ornek-pudra/onizleme.jpg" alt="Pudra &amp; Gül Altını temasıyla hazırlanmış örnek davetiye kapağı" width="1200" height="630" loading="lazy">
+        <a class="shot" href="ornek-tezhip/" aria-label="Saray örneğini aç">
+          <img src="ornek-tezhip/onizleme.jpg" alt="Saray örnek davetiye kapağı" width="1200" height="630" loading="lazy">
         </a>
         <div class="theme-text">
-          <h3>Pudra &amp; Gül Altını</h3>
-          <p>Pudra pembesi, gül altını kabartmalar. Yumuşak ve romantik.</p>
+          <p class="parts caps">Lacivert &amp; Altın · Tezhip · Kapı</p>
+          <h3>Saray</h3>
+          <p>Lacivert zemin üzerine altın tezhip; köşebentler ve Selçuklu yıldızı.</p>
+          <a class="theme-link" href="ornek-tezhip/">Örneği aç <span aria-hidden="true">→</span></a>
+        </div>
+      </article>
+      <article class="theme">
+        <a class="shot" href="ornek-cini/" aria-label="İznik örneğini aç">
+          <img src="ornek-cini/onizleme.jpg" alt="İznik örnek davetiye kapağı" width="1200" height="630" loading="lazy">
+        </a>
+        <div class="theme-text">
+          <p class="parts caps">İznik Mavisi · Çini · Zarf</p>
+          <h3>İznik</h3>
+          <p>Beyaz sır üzerine kobalt laleler; mühürlü zarftan çıkan kart.</p>
+          <a class="theme-link" href="ornek-cini/">Örneği aç <span aria-hidden="true">→</span></a>
+        </div>
+      </article>
+      <article class="theme">
+        <a class="shot" href="ornek-pudra/" aria-label="Pudra örneğini aç">
+          <img src="ornek-pudra/onizleme.jpg" alt="Pudra örnek davetiye kapağı" width="1200" height="630" loading="lazy">
+        </a>
+        <div class="theme-text">
+          <p class="parts caps">Pudra &amp; Gül Altını · Klasik · Zarf</p>
+          <h3>Pudra</h3>
+          <p>Gül altını kabartmalar ve pudra pembesi bir zarf.</p>
           <a class="theme-link" href="ornek-pudra/">Örneği aç <span aria-hidden="true">→</span></a>
         </div>
       </article>
       <article class="theme">
-        <a class="shot" href="ornek-zeytin/" aria-label="Zeytin &amp; Krem örneğini aç">
-          <img src="ornek-zeytin/onizleme.jpg" alt="Zeytin &amp; Krem temasıyla hazırlanmış örnek davetiye kapağı" width="1200" height="630" loading="lazy">
+        <a class="shot" href="ornek-zumrut/" aria-label="Zümrüt örneğini aç">
+          <img src="ornek-zumrut/onizleme.jpg" alt="Zümrüt örnek davetiye kapağı" width="1200" height="630" loading="lazy">
         </a>
         <div class="theme-text">
-          <h3>Zeytin &amp; Krem</h3>
-          <p>Krem kâğıt, zeytin yeşili mühür ve çizgiler. Doğal ve sade.</p>
+          <p class="parts caps">Zümrüt &amp; Altın · Tezhip · Zarf</p>
+          <h3>Zümrüt</h3>
+          <p>Zümrüt yeşili zarf, astarında altın Selçuklu yıldızları.</p>
+          <a class="theme-link" href="ornek-zumrut/">Örneği aç <span aria-hidden="true">→</span></a>
+        </div>
+      </article>
+      <article class="theme">
+        <a class="shot" href="ornek-sampanya/" aria-label="Şampanya örneğini aç">
+          <img src="ornek-sampanya/onizleme.jpg" alt="Şampanya örnek davetiye kapağı" width="1200" height="630" loading="lazy">
+        </a>
+        <div class="theme-text">
+          <p class="parts caps">Şampanya &amp; Fildişi · Klasik · Kapı</p>
+          <h3>Şampanya</h3>
+          <p>Fildişi kapılar, şampanya altını süslemeler.</p>
+          <a class="theme-link" href="ornek-sampanya/">Örneği aç <span aria-hidden="true">→</span></a>
+        </div>
+      </article>
+      <article class="theme">
+        <a class="shot" href="ornek-zeytin/" aria-label="Zeytin Dalı örneğini aç">
+          <img src="ornek-zeytin/onizleme.jpg" alt="Zeytin Dalı örnek davetiye kapağı" width="1200" height="630" loading="lazy">
+        </a>
+        <div class="theme-text">
+          <p class="parts caps">Zeytin &amp; Krem · Klasik · Kapı</p>
+          <h3>Zeytin Dalı</h3>
+          <p>Krem kâğıt ve zeytin yeşili mühür; doğal ve sade.</p>
           <a class="theme-link" href="ornek-zeytin/">Örneği aç <span aria-hidden="true">→</span></a>
         </div>
       </article>
       <article class="theme">
-        <a class="shot" href="ornek-lacivert-gumus/" aria-label="Lacivert &amp; Gümüş örneğini aç">
-          <img src="ornek-lacivert-gumus/onizleme.jpg" alt="Lacivert &amp; Gümüş temasıyla hazırlanmış örnek davetiye kapağı" width="1200" height="630" loading="lazy">
+        <a class="shot" href="ornek-lacivert-gumus/" aria-label="Gece örneğini aç">
+          <img src="ornek-lacivert-gumus/onizleme.jpg" alt="Gece örnek davetiye kapağı" width="1200" height="630" loading="lazy">
         </a>
         <div class="theme-text">
-          <h3>Lacivert &amp; Gümüş</h3>
-          <p>Gece laciverti ve gümüş işlemeler. Modern ve şık.</p>
+          <p class="parts caps">Lacivert &amp; Gümüş · Çini · Zarf</p>
+          <h3>Gece</h3>
+          <p>Gece lacivertinde gümüş ve turkuaz çini; zarfla açılır.</p>
           <a class="theme-link" href="ornek-lacivert-gumus/">Örneği aç <span aria-hidden="true">→</span></a>
         </div>
       </article>
+      </div>
+    </div>
+  </section>
+
+  <section id="parcalar">
+    <div class="wrap">
+      <h2>Kendi kombinasyonunuz</h2>
+      <p class="section-note">Koleksiyonlar sadece başlangıç. Renk, süsleme ve açılışı ayrı ayrı seçip istediğiniz gibi birleştirebilirsiniz.</p>
+      <div class="kit">
+        <div><h3>Renk</h3><ul><li><span class="swatch" style="--a:#4a0c1a;--b:#d6b26a" aria-hidden="true"></span><span><b>Bordo &amp; Altın</b><small>Kadife bordo üzerine altın varak. Klasik ve görkemli.</small></span></li><li><span class="swatch" style="--a:#13244d;--b:#d4ae62" aria-hidden="true"></span><span><b>Lacivert &amp; Altın</b><small>Lacivert zemin, altın varak. Tezhip sanatının klasik ikilisi.</small></span></li><li><span class="swatch" style="--a:#0a3b30;--b:#d4ae62" aria-hidden="true"></span><span><b>Zümrüt &amp; Altın</b><small>Derin zümrüt yeşili ve altın. Asil ve sıcak.</small></span></li><li><span class="swatch" style="--a:#10203a;--b:#c3cad6" aria-hidden="true"></span><span><b>Lacivert &amp; Gümüş</b><small>Gece laciverti ve gümüş işlemeler. Modern ve şık.</small></span></li><li><span class="swatch" style="--a:#f6f0e4;--b:#b8964f" aria-hidden="true"></span><span><b>Şampanya &amp; Fildişi</b><small>Fildişi kâğıt, şampanya altını. Aydınlık ve zamansız.</small></span></li><li><span class="swatch" style="--a:#f5e5de;--b:#b07a5a" aria-hidden="true"></span><span><b>Pudra &amp; Gül Altını</b><small>Pudra pembesi, gül altını kabartmalar. Yumuşak ve romantik.</small></span></li><li><span class="swatch" style="--a:#f1efe3;--b:#6e7a48" aria-hidden="true"></span><span><b>Zeytin &amp; Krem</b><small>Krem kâğıt, zeytin yeşili mühür ve çizgiler. Doğal ve sade.</small></span></li><li><span class="swatch" style="--a:#f6f5f0;--b:#1f4f91" aria-hidden="true"></span><span><b>İznik Mavisi</b><small>Beyaz sır üzerine kobalt, turkuaz ve mercan. Çinilerin renkleri.</small></span></li></ul></div>
+        <div><h3>Süsleme</h3><ul><li><span><b>Klasik</b><small>İnce kıvrımlı köşe süsleri ve çiçek deseni.</small></span></li><li><span><b>Tezhip</b><small>Dilimli köşebentler, hatayi rozetleri ve Selçuklu yıldızı.</small></span></li><li><span><b>Çini</b><small>Lale, saz yaprağı ve çintemani; İznik çinilerinden.</small></span></li></ul></div>
+        <div><h3>Açılış</h3><ul><li><span><b>Kapı</b><small>Mühürlü iki kanatlı kapı açılır.</small></span></li><li><span><b>Zarf</b><small>Mühürlü zarfın kapağı açılır, kart içinden yükselir.</small></span></li></ul></div>
       </div>
     </div>
   </section>
@@ -156,7 +224,7 @@ footer{padding-block:28px 40px;border-top:1px solid var(--rule);color:var(--mute
       <h2>Nasıl çalışır?</h2>
       <p class="section-note">Nişan, söz, kına, nikâh, düğün ve sünnet için.</p>
       <ol class="steps">
-        <li><h3>Formu doldurun</h3><p>İsimler, tarih, saat, mekân ve beğendiğiniz tema.</p></li>
+        <li><h3>Formu doldurun</h3><p>İsimler, tarih, saat, mekân; renk, süsleme ve açılış seçimi.</p></li>
         <li><h3>Taslağı onaylayın</h3><p>Size özel taslak linki gönderiyoruz; istediğiniz değişiklikleri birlikte yapıyoruz.</p></li>
         <li><h3>Linki paylaşın</h3><p>WhatsApp'ta kapak görseliyle görünen tek bir link; misafirleriniz dokunup açar.</p></li>
       </ol>
@@ -168,7 +236,7 @@ footer{padding-block:28px 40px;border-top:1px solid var(--rule);color:var(--mute
       <h2>Davetiyede neler var?</h2>
       <p class="section-note">Uygulama indirmek ya da üye olmak gerekmez.</p>
       <ul class="features">
-        <li><b>Mühürlü kapı açılışı.</b> <span>Dokununca kapılar parıltıyla açılır.</span></li>
+        <li><b>Mühürlü açılış.</b> <span>Dokununca kapılar ya da zarf parıltıyla açılır.</span></li>
         <li><b>Tek dokunuşla konum.</b> <span>Mekâna dokunan misafir doğrudan haritaya gider.</span></li>
         <li><b>Canlı geri sayım.</b> <span>Güne kalan süre saniye saniye işler.</span></li>
         <li><b>Linkle paylaşım.</b> <span>WhatsApp'ta kapak görseli ve başlıkla görünür.</span></li>

@@ -1,5 +1,6 @@
 <!doctype html>
-<!-- Davetiyem şablonu. [[...]] alanlarını uret.py doldurur; bu dosyayı elle düzenlemeye gerek yok. -->
+<!-- Davetiyem şablonu. [[...]] alanlarını uret.py doldurur; bu dosyayı elle düzenlemeye gerek yok.
+     Renk: temalar.json · Süsleme: sablon/susleme/<ad>/ · Açılış: sablon/acilis/<ad>.html + .css -->
 <html lang="tr">
 <head>
 <meta charset="utf-8">
@@ -31,7 +32,7 @@
 
 </style>
 <style>
-/* Tema: renkler ve dokular (uret.py temalar.json'dan yazar) */
+/* Renk teması (temalar.json) */
 :root{
   --bg-deep:#e2dfcd;
   --bg:#f1efe3;
@@ -60,6 +61,10 @@
   --spark-d:#4d5732;
   --door-dim:.75;
   --label:#4d5732;
+  --orn-1:#6e7a48;
+  --orn-2:#a2ab78;
+  --orn-3:#4d5732;
+  --orn-vein:#f1efe3;
   --foil:linear-gradient(100deg,#2c321c 0%,#414a29 22%,#5a6538 40%,#8a9563 48%,#5a6538 56%,#414a29 72%,#2c321c 100%);
   --noise:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.18 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url%28%23n%29'/%3E%3C/svg%3E");
   --damask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='56' height='56'%3E%3Cg fill='none' stroke='%236e7a48' stroke-opacity='0.16' stroke-width='1'%3E%3Cpath d='M28 16c3.5 4.5 3.5 7.5 0 12c-3.5-4.5-3.5-7.5 0-12zM28 40c3.5-4.5 3.5-7.5 0-12c-3.5 4.5-3.5 7.5 0 12zM16 28c4.5-3.5 7.5-3.5 12 0c-4.5 3.5-7.5 3.5-12 0zM40 28c-4.5-3.5-7.5-3.5-12 0c4.5 3.5 7.5 3.5 12 0z'/%3E%3C/g%3E%3Cg fill='%236e7a48' fill-opacity='0.22'%3E%3Ccircle cx='0' cy='0' r='1.4'/%3E%3Ccircle cx='56' cy='0' r='1.4'/%3E%3Ccircle cx='0' cy='56' r='1.4'/%3E%3Ccircle cx='56' cy='56' r='1.4'/%3E%3C/g%3E%3C/svg%3E");
@@ -73,7 +78,7 @@
 }
 [hidden]{display:none!important}
 
-/* Yerleşim: tek ekranlık davetiye kartı; üstünde mühürle açılan iki kanatlı kapak. */
+/* Yerleşim: tek ekranlık davetiye kartı; üstünde açılış sahnesi (kapı ya da zarf). */
 html,body{height:100%}
 body{
   margin:0;
@@ -243,7 +248,7 @@ body.locked{overflow:hidden}
 .replay:hover{color:var(--accent)}
 .replay:focus-visible{outline:1px solid var(--accent);outline-offset:2px}
 
-/* Açılış animasyonu (kapı açılırken içerik sırayla gelir) */
+/* İçerik açılıştan sonra sırayla gelir */
 .revealed .r{animation:rise 1.05s cubic-bezier(.2,.7,.2,1) both;animation-delay:calc(.55s + var(--i,0) * .13s)}
 .revealed .names .foil-text{animation:foil 2.6s ease-out 1.25s both}
 @keyframes rise{
@@ -255,75 +260,16 @@ body.locked{overflow:hidden}
   to{background-position:0% 0}
 }
 
-/* ---------- Kapak (iki kanatlı kapı) ---------- */
+/* ---------- Açılış sahnesinin ortak parçaları ---------- */
 .gate{
   position:fixed;inset:0;z-index:20;
   display:block;width:100%;height:100%;
   margin:0;padding:0;border:0;
   background:transparent;color:inherit;font:inherit;
   cursor:pointer;
-  perspective:1700px;
   -webkit-tap-highlight-color:transparent;
 }
 .gate:focus-visible .seal{outline:1px solid var(--accent-light);outline-offset:8px}
-.door{
-  position:absolute;top:0;bottom:0;width:50.4%;
-  display:block;
-  transition:transform 1.75s cubic-bezier(.6,.02,.22,1),filter 1.75s ease;
-  will-change:transform;
-  -webkit-backface-visibility:hidden;backface-visibility:hidden;
-}
-.door-l{
-  left:0;transform-origin:0 50%;
-  background:
-    var(--damask),
-    var(--noise),
-    radial-gradient(ellipse 140% 80% at 100% 38%,var(--bg-lift) 0%,var(--bg) 50%,var(--bg-deep) 100%);
-  box-shadow:inset -1px 0 0 var(--line),inset -26px 0 30px -18px var(--shade);
-}
-.door-r{
-  right:0;transform-origin:100% 50%;
-  background:
-    var(--damask),
-    var(--noise),
-    radial-gradient(ellipse 140% 80% at 0% 38%,var(--bg-lift) 0%,var(--bg) 50%,var(--bg-deep) 100%);
-  box-shadow:inset 1px 0 0 var(--line),inset 26px 0 30px -18px var(--shade);
-}
-.door::before,.door::after{content:"";position:absolute;pointer-events:none}
-.door::before{inset:16px;border:1px solid var(--line)}
-.door::after{inset:23px;border:1px solid var(--faint)}
-.gate.open .door-l{transform:rotateY(-106deg);filter:brightness(var(--door-dim))}
-.gate.open .door-r{transform:rotateY(106deg);filter:brightness(var(--door-dim))}
-
-.cover{
-  position:absolute;inset:0;
-  display:flex;flex-direction:column;align-items:center;justify-content:center;
-  gap:clamp(14px,2.6vh,24px);
-  padding:24px 16px;box-sizing:border-box;
-  text-align:center;
-  pointer-events:none;
-  transition:opacity .45s ease,transform .45s ease;
-}
-.plaque{
-  --seal:clamp(100px,28vw,118px);
-  position:relative;
-  display:flex;flex-direction:column;align-items:center;
-  gap:clamp(10px,1.9vh,16px);
-  width:min(80vw,320px);box-sizing:border-box;
-  padding:clamp(42px,7vh,58px) 16px 0;
-  margin-bottom:calc(var(--seal) / 2);
-  background:
-    var(--noise),
-    radial-gradient(ellipse 120% 90% at 50% 25%,var(--bg-lift) 0%,var(--bg) 62%,var(--bg-deep) 100%);
-  border:1px solid var(--line);
-  border-radius:50% 50% 6px 6px / 150px 150px 6px 6px;
-  box-shadow:
-    inset 0 0 0 6px var(--bg),
-    inset 0 0 0 7px var(--faint),
-    0 26px 50px -14px var(--shade);
-}
-.plaque .seal{width:var(--seal);margin-top:4px;margin-bottom:calc(var(--seal) / -2)}
-.gate.opening .cover{opacity:0;transform:scale(1.05)}
 .cover-eyebrow{display:block;font-size:11px;color:var(--label);letter-spacing:.38em;padding-left:.38em}
 .cover-names{display:flex;flex-direction:column;align-items:center;font-family:var(--font-script);font-size:clamp(40px,min(12.5vw,6.6vh),56px);line-height:.96}
 .cover-names span{display:inline-block;padding:.04em .36em .1em}
@@ -356,7 +302,7 @@ body.locked{overflow:hidden}
 #sparkle{position:fixed;inset:0;width:100%;height:100%;z-index:30;pointer-events:none}
 
 /* Kodsuz pırıltı: yalnızca kod çalışmayan önizlemelerde (iPhone dosya önizlemesi gibi) */
-.sparks{position:fixed;left:50%;top:54%;width:0;height:0;z-index:30;pointer-events:none}
+.sparks{position:fixed;left:50%;top:var(--spark-top,54%);width:0;height:0;z-index:30;pointer-events:none}
 .js .sparks{display:none}
 .sparks i{
   position:absolute;left:0;top:0;
@@ -364,7 +310,7 @@ body.locked{overflow:hidden}
   background:var(--c);
   clip-path:polygon(50% 0,60% 40%,100% 50%,60% 60%,50% 100%,40% 60%,0 50%,40% 40%);
   opacity:0;
-  animation:spark var(--t) cubic-bezier(.15,.7,.3,1) calc(2.7s + var(--d)) both;
+  animation:spark var(--t) cubic-bezier(.15,.7,.3,1) calc(var(--spark-delay,2.7s) + var(--d)) both;
 }
 @keyframes spark{
   0%{opacity:0;transform:translate(0,0) scale(.2) rotate(0)}
@@ -375,30 +321,106 @@ body.locked{overflow:hidden}
   100%{opacity:0;transform:translate(var(--x),calc(var(--y) + var(--f))) scale(.35) rotate(calc(var(--r) * 1.6))}
 }
 
-/* Kod çalışmayan ortamlar: kapak birkaç saniye görünür, sonra kapılar kendiliğinden açılır.
+/* Kod çalışmayan ortamlar: açılış sahnesi birkaç saniye görünür, sonra kendiliğinden açılır.
    Animasyon da çalışmazsa temel durum zaten "açık" olduğu için kart doğrudan görünür. */
-html:not(.js) .gate{visibility:hidden;animation:gate-off 0s linear 4.4s both}
+html:not(.js) .gate{visibility:hidden;animation:gate-off 0s linear var(--nojs-hide,4.4s) both}
+html:not(.js) .hint,html:not(.js) .count{display:none}
+html:not(.js) .count-static{display:block}
+html:not(.js) .r{animation:rise 1.05s cubic-bezier(.2,.7,.2,1) both;animation-delay:calc(var(--nojs-rise,3.05s) + var(--i,0) * .13s)}
+html:not(.js) .names .foil-text{animation:foil 2.6s ease-out var(--nojs-foil,3.7s) both}
+@keyframes gate-off{from{visibility:visible}to{visibility:hidden}}
+
+@media (prefers-reduced-motion:reduce){
+  .revealed .r,.revealed .names .foil-text,.hint{animation:none}
+  html:not(.js) .gate,.sparks{display:none}
+  html:not(.js) .r,html:not(.js) .names .foil-text{animation:none}
+}
+</style>
+<style>
+/* Süsleme seti */
+/* Klasik süsleme: ek stil gerekmiyor */
+
+</style>
+<style>
+/* Açılış sahnesi */
+/* Açılış: iki kanatlı kapı. Mühüre dokununca kanatlar 3B olarak açılır. */
+:root{--nojs-hide:4.4s;--nojs-rise:3.05s;--nojs-foil:3.7s;--spark-delay:2.7s;--spark-top:54%}
+
+.gate-kapi{perspective:1700px}
+.door{
+  position:absolute;top:0;bottom:0;width:50.4%;
+  display:block;
+  transition:transform 1.75s cubic-bezier(.6,.02,.22,1),filter 1.75s ease;
+  will-change:transform;
+  -webkit-backface-visibility:hidden;backface-visibility:hidden;
+}
+.door-l{
+  left:0;transform-origin:0 50%;
+  background:
+    var(--damask),
+    var(--noise),
+    radial-gradient(ellipse 140% 80% at 100% 38%,var(--bg-lift) 0%,var(--bg) 50%,var(--bg-deep) 100%);
+  box-shadow:inset -1px 0 0 var(--line),inset -26px 0 30px -18px var(--shade);
+}
+.door-r{
+  right:0;transform-origin:100% 50%;
+  background:
+    var(--damask),
+    var(--noise),
+    radial-gradient(ellipse 140% 80% at 0% 38%,var(--bg-lift) 0%,var(--bg) 50%,var(--bg-deep) 100%);
+  box-shadow:inset 1px 0 0 var(--line),inset 26px 0 30px -18px var(--shade);
+}
+.door::before,.door::after{content:"";position:absolute;pointer-events:none}
+.door::before{inset:16px;border:1px solid var(--line)}
+.door::after{inset:23px;border:1px solid var(--faint)}
+.gate-kapi.open .door-l{transform:rotateY(-106deg);filter:brightness(var(--door-dim))}
+.gate-kapi.open .door-r{transform:rotateY(106deg);filter:brightness(var(--door-dim))}
+
+.cover{
+  position:absolute;inset:0;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:clamp(14px,2.6vh,24px);
+  padding:24px 16px;box-sizing:border-box;
+  text-align:center;
+  pointer-events:none;
+  transition:opacity .45s ease,transform .45s ease;
+}
+.plaque{
+  --seal:clamp(100px,28vw,118px);
+  position:relative;
+  display:flex;flex-direction:column;align-items:center;
+  gap:clamp(10px,1.9vh,16px);
+  width:min(80vw,320px);box-sizing:border-box;
+  padding:clamp(42px,7vh,58px) 16px 0;
+  margin-bottom:calc(var(--seal) / 2);
+  background:
+    var(--noise),
+    radial-gradient(ellipse 120% 90% at 50% 25%,var(--bg-lift) 0%,var(--bg) 62%,var(--bg-deep) 100%);
+  border:1px solid var(--line);
+  border-radius:50% 50% 6px 6px / 150px 150px 6px 6px;
+  box-shadow:
+    inset 0 0 0 6px var(--bg),
+    inset 0 0 0 7px var(--faint),
+    0 26px 50px -14px var(--shade);
+}
+.plaque .seal{width:var(--seal);margin-top:4px;margin-bottom:calc(var(--seal) / -2)}
+.gate-kapi.opening .cover{opacity:0;transform:scale(1.05)}
+
+/* Kodsuz ortam: kapı kendiliğinden açılır */
 html:not(.js) .door-l{transform:rotateY(-106deg);filter:brightness(var(--door-dim));animation:door-l 1.75s cubic-bezier(.6,.02,.22,1) 2.6s both}
 html:not(.js) .door-r{transform:rotateY(106deg);filter:brightness(var(--door-dim));animation:door-r 1.75s cubic-bezier(.6,.02,.22,1) 2.6s both}
 html:not(.js) .cover{opacity:0;animation:cover-out .5s ease 2.2s both}
-html:not(.js) .hint,html:not(.js) .count{display:none}
-html:not(.js) .count-static{display:block}
-html:not(.js) .r{animation:rise 1.05s cubic-bezier(.2,.7,.2,1) both;animation-delay:calc(3.05s + var(--i,0) * .13s)}
-html:not(.js) .names .foil-text{animation:foil 2.6s ease-out 3.7s both}
-@keyframes gate-off{from{visibility:visible}to{visibility:hidden}}
 @keyframes door-l{from{transform:none;filter:none}to{transform:rotateY(-106deg);filter:brightness(var(--door-dim))}}
 @keyframes door-r{from{transform:none;filter:none}to{transform:rotateY(106deg);filter:brightness(var(--door-dim))}}
 @keyframes cover-out{from{opacity:1;transform:none}to{opacity:0;transform:scale(1.05)}}
 
 @media (prefers-reduced-motion:reduce){
   .door{transition:none}
-  .gate{transition:opacity .35s ease}
-  .gate.open{opacity:0}
-  .gate.open .door-l,.gate.open .door-r{transform:none;filter:none}
-  .revealed .r,.revealed .names .foil-text,.hint{animation:none}
-  html:not(.js) .gate,.sparks{display:none}
-  html:not(.js) .r,html:not(.js) .names .foil-text{animation:none}
+  .gate-kapi{transition:opacity .35s ease}
+  .gate-kapi.open{opacity:0}
+  .gate-kapi.open .door-l,.gate-kapi.open .door-r{transform:none;filter:none}
 }
+
 </style>
 </head>
 <body>
@@ -431,6 +453,7 @@ html:not(.js) .names .foil-text{animation:foil 2.6s ease-out 3.7s both}
     <circle cx="98" cy="12" r="1.6" fill="currentColor"/>
     <circle cx="122" cy="12" r="1.6" fill="currentColor"/>
   </symbol>
+
 </svg>
 
 <main class="stage" lang="tr">
@@ -490,7 +513,8 @@ html:not(.js) .names .foil-text{animation:foil 2.6s ease-out 3.7s both}
   <button class="replay caps" id="replay" type="button" hidden>Açılışı tekrar izle</button>
 </main>
 
-<button class="gate" id="gate" type="button" lang="tr" aria-label="Davetiyeyi aç">
+<button class="gate gate-kapi" id="gate" type="button" lang="tr" aria-label="Davetiyeyi aç"
+        data-open="380" data-reveal="380" data-done="380" data-hide="2150">
   <span class="door door-l" aria-hidden="true"></span>
   <span class="door door-r" aria-hidden="true"></span>
   <span class="cover" aria-hidden="true">
@@ -503,6 +527,7 @@ html:not(.js) .names .foil-text{animation:foil 2.6s ease-out 3.7s both}
     <span class="hint">Açmak için dokunun</span>
   </span>
 </button>
+
 
 <div class="sparks" aria-hidden="true"><i style="--x:-221px;--y:78px;--f:80px;--r:-76deg;--z:12.3px;--t:2.31s;--d:0.27s;--c:var(--spark-c)"></i><i style="--x:161px;--y:89px;--f:108px;--r:175deg;--z:10.7px;--t:1.87s;--d:0.08s;--c:var(--spark-b)"></i><i style="--x:-97px;--y:-42px;--f:76px;--r:-163deg;--z:12.4px;--t:2.07s;--d:0.12s;--c:var(--spark-d)"></i><i style="--x:104px;--y:-181px;--f:86px;--r:73deg;--z:5.6px;--t:1.95s;--d:0.06s;--c:var(--spark-b)"></i><i style="--x:-157px;--y:-4px;--f:114px;--r:-122deg;--z:6.8px;--t:1.62s;--d:0.16s;--c:var(--spark-c)"></i><i style="--x:-181px;--y:-121px;--f:53px;--r:-130deg;--z:7.9px;--t:2.35s;--d:0.04s;--c:var(--spark-a)"></i><i style="--x:45px;--y:-185px;--f:95px;--r:57deg;--z:5.4px;--t:2.26s;--d:0.28s;--c:var(--spark-a)"></i><i style="--x:220px;--y:-65px;--f:55px;--r:-9deg;--z:11.3px;--t:2.51s;--d:0.07s;--c:var(--spark-c)"></i><i style="--x:-119px;--y:39px;--f:109px;--r:-138deg;--z:6.5px;--t:2.28s;--d:0.05s;--c:var(--spark-b)"></i><i style="--x:8px;--y:64px;--f:100px;--r:130deg;--z:7.5px;--t:1.75s;--d:0.08s;--c:var(--spark-d)"></i><i style="--x:109px;--y:-78px;--f:51px;--r:90deg;--z:11.2px;--t:2.12s;--d:0.00s;--c:var(--spark-a)"></i><i style="--x:-99px;--y:-173px;--f:67px;--r:-81deg;--z:12.6px;--t:2.08s;--d:0.29s;--c:var(--spark-d)"></i><i style="--x:-206px;--y:-157px;--f:50px;--r:-39deg;--z:12.7px;--t:2.07s;--d:0.07s;--c:var(--spark-b)"></i><i style="--x:-133px;--y:162px;--f:52px;--r:-56deg;--z:7.4px;--t:2.11s;--d:0.19s;--c:var(--spark-c)"></i><i style="--x:170px;--y:82px;--f:107px;--r:-148deg;--z:5.2px;--t:2.54s;--d:0.21s;--c:var(--spark-b)"></i><i style="--x:-158px;--y:-62px;--f:94px;--r:-43deg;--z:7.0px;--t:1.85s;--d:0.01s;--c:var(--spark-a)"></i><i style="--x:-229px;--y:55px;--f:111px;--r:28deg;--z:7.1px;--t:2.13s;--d:0.00s;--c:var(--spark-a)"></i><i style="--x:-37px;--y:35px;--f:98px;--r:104deg;--z:10.3px;--t:2.24s;--d:0.04s;--c:var(--spark-c)"></i><i style="--x:-49px;--y:-177px;--f:49px;--r:16deg;--z:8.9px;--t:2.50s;--d:0.15s;--c:var(--spark-c)"></i><i style="--x:-228px;--y:-53px;--f:129px;--r:-57deg;--z:7.4px;--t:1.78s;--d:0.17s;--c:var(--spark-c)"></i><i style="--x:2px;--y:73px;--f:44px;--r:-92deg;--z:8.1px;--t:2.30s;--d:0.19s;--c:var(--spark-a)"></i><i style="--x:-91px;--y:-13px;--f:124px;--r:-155deg;--z:9.2px;--t:1.83s;--d:0.02s;--c:var(--spark-c)"></i><i style="--x:-101px;--y:74px;--f:103px;--r:-21deg;--z:6.1px;--t:1.92s;--d:0.26s;--c:var(--spark-b)"></i><i style="--x:18px;--y:-112px;--f:48px;--r:-118deg;--z:6.5px;--t:1.54s;--d:0.17s;--c:var(--spark-b)"></i><i style="--x:-140px;--y:-67px;--f:59px;--r:-22deg;--z:11.6px;--t:1.71s;--d:0.22s;--c:var(--spark-b)"></i><i style="--x:19px;--y:26px;--f:126px;--r:24deg;--z:9.0px;--t:2.50s;--d:0.13s;--c:var(--spark-b)"></i><i style="--x:180px;--y:6px;--f:47px;--r:-175deg;--z:11.9px;--t:1.65s;--d:0.15s;--c:var(--spark-b)"></i><i style="--x:-78px;--y:-22px;--f:42px;--r:-163deg;--z:5.9px;--t:2.27s;--d:0.06s;--c:var(--spark-c)"></i><i style="--x:35px;--y:-174px;--f:78px;--r:-106deg;--z:10.2px;--t:2.03s;--d:0.03s;--c:var(--spark-b)"></i><i style="--x:66px;--y:-187px;--f:126px;--r:161deg;--z:10.1px;--t:2.10s;--d:0.11s;--c:var(--spark-c)"></i><i style="--x:-180px;--y:-36px;--f:110px;--r:-90deg;--z:8.0px;--t:2.17s;--d:0.03s;--c:var(--spark-d)"></i><i style="--x:-52px;--y:148px;--f:49px;--r:-2deg;--z:11.5px;--t:1.84s;--d:0.10s;--c:var(--spark-b)"></i><i style="--x:-80px;--y:46px;--f:89px;--r:-153deg;--z:8.5px;--t:2.12s;--d:0.22s;--c:var(--spark-d)"></i><i style="--x:-178px;--y:116px;--f:78px;--r:-119deg;--z:9.8px;--t:2.12s;--d:0.10s;--c:var(--spark-a)"></i><i style="--x:47px;--y:125px;--f:74px;--r:-144deg;--z:7.3px;--t:1.73s;--d:0.28s;--c:var(--spark-a)"></i><i style="--x:-101px;--y:30px;--f:78px;--r:-121deg;--z:9.8px;--t:2.07s;--d:0.11s;--c:var(--spark-d)"></i><i style="--x:53px;--y:81px;--f:93px;--r:18deg;--z:7.2px;--t:2.04s;--d:0.23s;--c:var(--spark-d)"></i><i style="--x:142px;--y:-76px;--f:58px;--r:-139deg;--z:8.1px;--t:2.50s;--d:0.04s;--c:var(--spark-d)"></i><i style="--x:215px;--y:73px;--f:119px;--r:86deg;--z:6.6px;--t:2.54s;--d:0.26s;--c:var(--spark-b)"></i><i style="--x:96px;--y:96px;--f:71px;--r:-59deg;--z:5.5px;--t:2.34s;--d:0.11s;--c:var(--spark-d)"></i><i style="--x:-20px;--y:-178px;--f:65px;--r:-110deg;--z:9.8px;--t:2.02s;--d:0.16s;--c:var(--spark-b)"></i><i style="--x:-52px;--y:156px;--f:121px;--r:-167deg;--z:12.4px;--t:2.46s;--d:0.21s;--c:var(--spark-b)"></i><i style="--x:-93px;--y:-146px;--f:41px;--r:10deg;--z:12.3px;--t:2.31s;--d:0.08s;--c:var(--spark-d)"></i><i style="--x:-194px;--y:-98px;--f:65px;--r:90deg;--z:6.0px;--t:2.31s;--d:0.12s;--c:var(--spark-c)"></i><i style="--x:39px;--y:65px;--f:55px;--r:-33deg;--z:5.1px;--t:2.57s;--d:0.20s;--c:var(--spark-b)"></i><i style="--x:-191px;--y:59px;--f:92px;--r:167deg;--z:10.4px;--t:2.39s;--d:0.20s;--c:var(--spark-c)"></i><i style="--x:176px;--y:-128px;--f:85px;--r:137deg;--z:9.7px;--t:2.04s;--d:0.13s;--c:var(--spark-b)"></i><i style="--x:131px;--y:-76px;--f:112px;--r:109deg;--z:7.7px;--t:1.99s;--d:0.05s;--c:var(--spark-b)"></i><i style="--x:155px;--y:18px;--f:71px;--r:107deg;--z:10.0px;--t:1.92s;--d:0.09s;--c:var(--spark-b)"></i><i style="--x:-34px;--y:71px;--f:51px;--r:144deg;--z:6.4px;--t:1.83s;--d:0.17s;--c:var(--spark-b)"></i><i style="--x:88px;--y:-51px;--f:70px;--r:-9deg;--z:6.9px;--t:2.22s;--d:0.20s;--c:var(--spark-b)"></i><i style="--x:-149px;--y:-148px;--f:121px;--r:-143deg;--z:6.6px;--t:1.72s;--d:0.24s;--c:var(--spark-a)"></i><i style="--x:4px;--y:176px;--f:40px;--r:80deg;--z:6.8px;--t:2.17s;--d:0.26s;--c:var(--spark-d)"></i><i style="--x:41px;--y:-115px;--f:104px;--r:-133deg;--z:11.5px;--t:2.21s;--d:0.24s;--c:var(--spark-b)"></i></div>
 <canvas id="sparkle" aria-hidden="true"></canvas>
@@ -520,6 +545,7 @@ html:not(.js) .names .foil-text{animation:foil 2.6s ease-out 3.7s both}
   var names = document.getElementById('names');
   var reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
   var busy = false;
+  function T(k, d){ var v = parseInt(gate.getAttribute('data-' + k), 10); return isNaN(v) ? d : v; }
 
   body.classList.add('locked');
 
@@ -586,25 +612,23 @@ html:not(.js) .names .foil-text{animation:foil 2.6s ease-out 3.7s both}
     })();
   }
 
-  /* ---- Kapıyı aç / kapat ---- */
+  /* ---- Açılış ---- */
   function open(){
     if (busy) return;
     busy = true;
     var s = gate.querySelector('.seal').getBoundingClientRect();
     var cx = s.left + s.width / 2, cy = s.top + s.height / 2;
     gate.classList.add('opening');
-    setTimeout(function(){
-      gate.classList.add('open');
-      body.classList.add('revealed');
-      if (!reduce) burst(cx, cy);
-    }, reduce ? 0 : 380);
+    setTimeout(function(){ gate.classList.add('open'); if (!reduce) burst(cx, cy); }, reduce ? 0 : T('open', 380));
+    setTimeout(function(){ body.classList.add('revealed'); }, reduce ? 0 : T('reveal', 380));
+    setTimeout(function(){ gate.classList.add('done'); }, reduce ? 0 : T('done', 380));
     setTimeout(function(){
       gate.hidden = true;
       body.classList.remove('locked');
       replay.hidden = false;
       busy = false;
       try { names.focus({ preventScroll:true }); } catch(e){}
-    }, reduce ? 400 : 2150);
+    }, reduce ? 400 : T('hide', 2150));
   }
   gate.addEventListener('click', open);
 
@@ -612,7 +636,7 @@ html:not(.js) .names .foil-text{animation:foil 2.6s ease-out 3.7s both}
     if (busy) return;
     window.scrollTo(0, 0);
     body.classList.remove('revealed');
-    gate.classList.remove('open', 'opening');
+    gate.classList.remove('open', 'opening', 'done');
     gate.hidden = false;
     body.classList.add('locked');
     replay.hidden = true;
